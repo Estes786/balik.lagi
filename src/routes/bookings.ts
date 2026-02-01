@@ -1,272 +1,251 @@
 // =================================================================
-// BALIK.LAGI - Booking Routes
+// BALIK.LAGI - Booking API Routes
 // =================================================================
 
-import { Hono } from 'hono';
-import type { Bindings, CreateBookingRequest } from '../types';
-import { requireAuth } from '../middleware/auth';
+import { Hono } from 'hono'
+import type { D1Database } from '@cloudflare/workers-types'
 
-const bookings = new Hono<{ Bindings: Bindings }>();
+type Bindings = {
+  DB: D1Database
+}
 
-// Create booking
-bookings.post('/', requireAuth, async (c) => {
+const bookings = new Hono<{ Bindings: Bindings }>()
+
+// =================================================================
+// GET ALL SERVICES
+// =================================================================
+bookings.get('/services', async (c) => {
   try {
-    const body = await c.req.json<CreateBookingRequest>();
-    const user = c.get('user');
-    
-    const {
-      customer_phone,
-      customer_name,
-      branch_id,
+    const result = await c.env.DB.prepare(`
+      SELECT id, service_name, service_tier, price, duration_minutes, description
+      FROM service_catalog
+      WHERE is_active = 1
+      ORDER BY price ASC
+    `).all()
+
+    return c.json({ success: true, services: result.results })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// GET ALL CAPSTERS
+// =================================================================
+bookings.get('/capsters', async (c) => {
+  try {
+    const result = await c.env.DB.prepare(`
+      SELECT id, display_name, specialty, rating
+      FROM capsters
+      WHERE is_active = 1
+      ORDER BY rating DESC
+    `).all()
+
+    return c.json({ success: true, capsters: result.results })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// CREATE BOOKING APPOINTMENT
+// =================================================================
+bookings.post('/create', async (c) => {
+  try {
+    const body = await c.req.json()
+    const { customer_id, service_id, capster_id, booking_date, booking_time, notes } = body
+
+    // Validate required fields
+    if (!customer_id || !service_id || !booking_date || !booking_time) {
+      return c.json({ success: false, error: 'Missing required fields' }, 400)
+    }
+
+    // Get customer info
+    const customer = await c.env.DB.prepare(`
+      SELECT customer_phone, customer_name, branch_id 
+      FROM user_profiles 
+      WHERE id = ?
+    `).bind(customer_id).first()
+
+    if (!customer) {
+      return c.json({ success: false, error: 'Customer not found' }, 404)
+    }
+
+    // Get service info
+    const service = await c.env.DB.prepare(`
+      SELECT service_name, price, branch_id 
+      FROM service_catalog 
+      WHERE id = ?
+    `).bind(service_id).first()
+
+    if (!service) {
+      return c.json({ success: false, error: 'Service not found' }, 404)
+    }
+
+    // Get capster info (optional)
+    let capster_name = null
+    if (capster_id) {
+      const capster = await c.env.DB.prepare(`
+        SELECT display_name FROM capsters WHERE id = ?
+      `).bind(capster_id).first()
+      capster_name = capster?.display_name
+    }
+
+    // Generate booking ID
+    const booking_id = `booking_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+
+    // Insert booking
+    await c.env.DB.prepare(`
+      INSERT INTO booking_appointments (
+        id, customer_id, customer_phone, customer_name, 
+        branch_id, service_id, service_name, service_price,
+        capster_id, capster_name, booking_date, booking_time,
+        status, notes, created_at
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, datetime('now'))
+    `).bind(
+      booking_id,
+      customer_id,
+      customer.customer_phone,
+      customer.customer_name,
+      service.branch_id,
       service_id,
-      capster_id,
+      service.service_name,
+      service.price,
+      capster_id || null,
+      capster_name,
       booking_date,
       booking_time,
-      notes
-    } = body;
-    
-    // Validate required fields
-    if (!customer_phone || !customer_name || !branch_id || !service_id || !booking_date || !booking_time) {
-      return c.json({ error: 'Missing required fields' }, 400);
-    }
-    
-    // Get service details
-    const service = await c.env.DB
-      .prepare('SELECT * FROM service_catalog WHERE id = ? AND is_active = 1')
-      .bind(service_id)
-      .first();
-    
-    if (!service) {
-      return c.json({ error: 'Service not found' }, 404);
-    }
-    
-    // Generate booking ID
-    const bookingId = `booking_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    
-    // Create booking
-    await c.env.DB
-      .prepare(`
-        INSERT INTO bookings 
-        (id, customer_phone, customer_name, customer_id, branch_id, service_id, capster_id,
-         booking_date, booking_time, service_tier, requested_capster, notes, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'pending')
-      `)
-      .bind(
-        bookingId,
-        customer_phone,
-        customer_name,
-        user.role === 'customer' ? user.id : null,
-        branch_id,
-        service_id,
-        capster_id || null,
-        booking_date,
-        booking_time,
-        service.service_tier,
-        capster_id || null,
-        notes || null
-      )
-      .run();
-    
-    // Get complete booking details
-    const booking = await c.env.DB
-      .prepare(`
-        SELECT b.*, s.service_name, s.price, s.duration_minutes,
-               c.display_name as capster_name
-        FROM bookings b
-        LEFT JOIN service_catalog s ON b.service_id = s.id
-        LEFT JOIN capsters c ON b.capster_id = c.id
-        WHERE b.id = ?
-      `)
-      .bind(bookingId)
-      .first();
-    
-    return c.json({
-      success: true,
-      booking
-    });
-  } catch (error: any) {
-    console.error('Create booking error:', error);
-    return c.json({ error: 'Failed to create booking', details: error.message }, 500);
-  }
-});
+      'confirmed',
+      notes || null
+    ).run()
 
-// Get bookings for current user
-bookings.get('/my-bookings', requireAuth, async (c) => {
+    return c.json({ 
+      success: true, 
+      message: 'Booking created successfully',
+      booking_id
+    })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// GET MY BOOKINGS (Customer)
+// =================================================================
+bookings.get('/my-bookings/:customer_id', async (c) => {
   try {
-    const user = c.get('user');
-    let bookings;
-    
-    if (user.role === 'customer') {
-      // Get customer bookings by phone
-      bookings = await c.env.DB
-        .prepare(`
-          SELECT b.*, s.service_name, s.price, s.duration_minutes,
-                 c.display_name as capster_name, br.name as branch_name
-          FROM bookings b
-          LEFT JOIN service_catalog s ON b.service_id = s.id
-          LEFT JOIN capsters c ON b.capster_id = c.id
-          LEFT JOIN branches br ON b.branch_id = br.id
-          WHERE b.customer_phone = ?
-          ORDER BY b.booking_date DESC, b.booking_time DESC
-          LIMIT 100
-        `)
-        .bind(user.customer_phone)
-        .all();
-    } else if (user.role === 'capster') {
-      // Get capster's bookings
-      const capster = await c.env.DB
-        .prepare('SELECT id FROM capsters WHERE user_id = ?')
-        .bind(user.id)
-        .first();
-      
-      if (!capster) {
-        return c.json({ bookings: [] });
+    const customer_id = c.req.param('customer_id')
+
+    const result = await c.env.DB.prepare(`
+      SELECT * FROM booking_appointments
+      WHERE customer_id = ?
+      ORDER BY booking_date DESC, booking_time DESC
+      LIMIT 50
+    `).bind(customer_id).all()
+
+    return c.json({ success: true, bookings: result.results })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// GET CAPSTER QUEUE (Capster)
+// =================================================================
+bookings.get('/capster-queue/:capster_id', async (c) => {
+  try {
+    const capster_id = c.req.param('capster_id')
+
+    const result = await c.env.DB.prepare(`
+      SELECT * FROM booking_appointments
+      WHERE capster_id = ? AND status IN ('confirmed', 'in_progress')
+      ORDER BY booking_date ASC, booking_time ASC
+      LIMIT 20
+    `).bind(capster_id).all()
+
+    return c.json({ success: true, queue: result.results })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// UPDATE BOOKING STATUS
+// =================================================================
+bookings.put('/update-status/:booking_id', async (c) => {
+  try {
+    const booking_id = c.req.param('booking_id')
+    const { status } = await c.req.json()
+
+    if (!['confirmed', 'in_progress', 'completed', 'cancelled', 'no_show'].includes(status)) {
+      return c.json({ success: false, error: 'Invalid status' }, 400)
+    }
+
+    // Update booking status
+    await c.env.DB.prepare(`
+      UPDATE booking_appointments 
+      SET status = ?, 
+          updated_at = datetime('now'),
+          completed_at = CASE WHEN ? = 'completed' THEN datetime('now') ELSE completed_at END
+      WHERE id = ?
+    `).bind(status, status, booking_id).run()
+
+    // If completed, increment coupon count
+    if (status === 'completed') {
+      const booking = await c.env.DB.prepare(`
+        SELECT customer_id, customer_phone, branch_id 
+        FROM booking_appointments 
+        WHERE id = ?
+      `).bind(booking_id).first()
+
+      if (booking) {
+        // Increment or create coupon record
+        await c.env.DB.prepare(`
+          INSERT INTO customer_coupons (
+            id, customer_id, customer_phone, branch_id, 
+            coupon_count, total_visits, last_visit_date, coupon_eligible
+          ) VALUES (
+            'coupon_' || ?, ?, ?, ?, 1, 1, date('now'), 0
+          )
+          ON CONFLICT(id) DO UPDATE SET
+            coupon_count = coupon_count + 1,
+            total_visits = total_visits + 1,
+            last_visit_date = date('now'),
+            coupon_eligible = CASE WHEN coupon_count + 1 >= 4 THEN 1 ELSE 0 END,
+            updated_at = datetime('now')
+        `).bind(
+          booking.customer_id,
+          booking.customer_id,
+          booking.customer_phone,
+          booking.branch_id
+        ).run()
       }
-      
-      bookings = await c.env.DB
-        .prepare(`
-          SELECT b.*, s.service_name, s.price, s.duration_minutes,
-                 br.name as branch_name
-          FROM bookings b
-          LEFT JOIN service_catalog s ON b.service_id = s.id
-          LEFT JOIN branches br ON b.branch_id = br.id
-          WHERE b.capster_id = ?
-          ORDER BY b.booking_date DESC, b.booking_time DESC
-          LIMIT 100
-        `)
-        .bind(capster.id)
-        .all();
-    } else {
-      // Admin can see all bookings for their branch
-      bookings = await c.env.DB
-        .prepare(`
-          SELECT b.*, s.service_name, s.price, s.duration_minutes,
-                 c.display_name as capster_name, br.name as branch_name
-          FROM bookings b
-          LEFT JOIN service_catalog s ON b.service_id = s.id
-          LEFT JOIN capsters c ON b.capster_id = c.id
-          LEFT JOIN branches br ON b.branch_id = br.id
-          WHERE b.branch_id = ?
-          ORDER BY b.booking_date DESC, b.booking_time DESC
-          LIMIT 100
-        `)
-        .bind(user.branch_id)
-        .all();
     }
-    
-    return c.json({
-      bookings: bookings?.results || []
-    });
-  } catch (error: any) {
-    console.error('Get bookings error:', error);
-    return c.json({ error: 'Failed to fetch bookings' }, 500);
-  }
-});
 
-// Get booking by ID
-bookings.get('/:id', requireAuth, async (c) => {
+    return c.json({ success: true, message: 'Status updated successfully' })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// GET CUSTOMER COUPON STATUS
+// =================================================================
+bookings.get('/coupon-status/:customer_id', async (c) => {
   try {
-    const bookingId = c.req.param('id');
-    
-    const booking = await c.env.DB
-      .prepare(`
-        SELECT b.*, s.service_name, s.price, s.duration_minutes,
-               c.display_name as capster_name, br.name as branch_name, br.address
-        FROM bookings b
-        LEFT JOIN service_catalog s ON b.service_id = s.id
-        LEFT JOIN capsters c ON b.capster_id = c.id
-        LEFT JOIN branches br ON b.branch_id = br.id
-        WHERE b.id = ?
-      `)
-      .bind(bookingId)
-      .first();
-    
-    if (!booking) {
-      return c.json({ error: 'Booking not found' }, 404);
-    }
-    
-    return c.json({ booking });
-  } catch (error: any) {
-    console.error('Get booking error:', error);
-    return c.json({ error: 'Failed to fetch booking' }, 500);
-  }
-});
+    const customer_id = c.req.param('customer_id')
 
-// Update booking status
-bookings.patch('/:id/status', requireAuth, async (c) => {
-  try {
-    const bookingId = c.req.param('id');
-    const { status } = await c.req.json();
-    const user = c.get('user');
-    
-    if (!status) {
-      return c.json({ error: 'Status is required' }, 400);
-    }
-    
-    const validStatuses = ['pending', 'confirmed', 'in_progress', 'completed', 'cancelled', 'no_show'];
-    if (!validStatuses.includes(status)) {
-      return c.json({ error: 'Invalid status' }, 400);
-    }
-    
-    // Check authorization
-    if (user.role === 'customer') {
-      return c.json({ error: 'Customers cannot update booking status' }, 403);
-    }
-    
-    // Update status
-    await c.env.DB
-      .prepare('UPDATE bookings SET status = ?, updated_at = datetime("now") WHERE id = ?')
-      .bind(status, bookingId)
-      .run();
-    
-    // Get updated booking
-    const booking = await c.env.DB
-      .prepare('SELECT * FROM bookings WHERE id = ?')
-      .bind(bookingId)
-      .first();
-    
-    return c.json({
-      success: true,
-      booking
-    });
-  } catch (error: any) {
-    console.error('Update booking status error:', error);
-    return c.json({ error: 'Failed to update booking status' }, 500);
-  }
-});
+    const result = await c.env.DB.prepare(`
+      SELECT * FROM customer_coupons WHERE customer_id = ?
+    `).bind(customer_id).first()
 
-// Cancel booking
-bookings.delete('/:id', requireAuth, async (c) => {
-  try {
-    const bookingId = c.req.param('id');
-    const user = c.get('user');
-    
-    // Get booking
-    const booking = await c.env.DB
-      .prepare('SELECT * FROM bookings WHERE id = ?')
-      .bind(bookingId)
-      .first();
-    
-    if (!booking) {
-      return c.json({ error: 'Booking not found' }, 404);
-    }
-    
-    // Check authorization
-    if (user.role === 'customer' && booking.customer_id !== user.id) {
-      return c.json({ error: 'Unauthorized to cancel this booking' }, 403);
-    }
-    
-    // Update to cancelled
-    await c.env.DB
-      .prepare('UPDATE bookings SET status = "cancelled", updated_at = datetime("now") WHERE id = ?')
-      .bind(bookingId)
-      .run();
-    
-    return c.json({ success: true });
+    return c.json({ 
+      success: true, 
+      coupon: result || { coupon_count: 0, total_visits: 0, coupon_eligible: 0 }
+    })
   } catch (error: any) {
-    console.error('Cancel booking error:', error);
-    return c.json({ error: 'Failed to cancel booking' }, 500);
+    return c.json({ success: false, error: error.message }, 500)
   }
-});
+})
 
-export default bookings;
+export default bookings

@@ -1,8 +1,9 @@
 # 🎯 BALIK.LAGI - Platform Booking Barbershop
 
-**Version**: 1.0.0  
-**Status**: ✅ Production Ready  
-**Tech Stack**: Hono + Cloudflare Pages + D1 Database
+**Version**: 2.0.0 (ENHANCED) ✨  
+**Status**: ✅ Production Ready & Deployed  
+**Tech Stack**: Hono + Cloudflare Pages + D1 Database + Enterprise UI  
+**Live URL**: https://917ffea0.balik-lagi-b9o.pages.dev
 
 ---
 
@@ -18,6 +19,10 @@
 - ✅ **Customer Analytics** dan loyalty tracking
 - ✅ **Transaction History** dan revenue tracking
 - ✅ **Access Key System** untuk controlled registration
+- ✨ **Enterprise-Grade Dashboards** (Customer, Capster, Admin)
+- ✨ **Bento-Style Dark Mode Design** - Premium UI/UX
+- ✨ **Real-time Analytics** dengan Chart.js
+- ✨ **Zod Validation** untuk enhanced security
 
 ---
 
@@ -34,6 +39,13 @@
 - **TailwindCSS** - Utility-first CSS framework
 - **FontAwesome** - Icon library
 - **Axios** - HTTP client
+- **Chart.js** ✨ - Data visualization for dashboards
+
+### Design System ✨ NEW
+- **Bento Grid Layout** - Modern card-based UI
+- **Dark Mode** - Sleek dark theme with amber accents
+- **Gradient Effects** - Premium visual polish
+- **Micro-interactions** - Smooth animations
 
 ### Authentication
 - **Session-based auth** with HTTP-only cookies
@@ -231,6 +243,14 @@ npm test                 # Test local server
 ---
 
 ## 🌐 DEPLOYMENT TO CLOUDFLARE PAGES
+
+### Production URL
+**Live Application**: https://917ffea0.balik-lagi-b9o.pages.dev
+
+### Dashboards
+- **Customer Dashboard**: https://917ffea0.balik-lagi-b9o.pages.dev/dashboard/customer
+- **Capster Dashboard**: https://917ffea0.balik-lagi-b9o.pages.dev/dashboard/capster
+- **Admin Dashboard**: https://917ffea0.balik-lagi-b9o.pages.dev/dashboard/admin
 
 ### Setup Cloudflare API Key
 ```bash

@@ -42,10 +42,20 @@ app.get('/api/health', (c) => {
   });
 });
 
-// Dashboard Routes
-app.get('/dashboard/customer', serveStatic({ path: '/static/dashboard-customer.html', root: './public' }));
-app.get('/dashboard/capster', serveStatic({ path: '/static/dashboard-capster.html', root: './public' }));
-app.get('/dashboard/admin', serveStatic({ path: '/static/dashboard-admin.html', root: './public' }));
+// Dashboard Routes - Fixed for Cloudflare Workers
+// NOTE: Cloudflare Pages automatically strips .html extension for clean URLs
+// Redirect to paths without .html extension
+app.get('/dashboard/customer', (c) => {
+  return c.redirect('/static/dashboard-customer');
+});
+
+app.get('/dashboard/capster', (c) => {
+  return c.redirect('/static/dashboard-capster');
+});
+
+app.get('/dashboard/admin', (c) => {
+  return c.redirect('/static/dashboard-admin');
+});
 
 // Home page
 app.get('/', (c) => {

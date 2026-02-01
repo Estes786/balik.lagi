@@ -248,15 +248,10 @@ app.get('/login', (c) => {
                     const response = await axios.post('/api/auth/login', data);
                     
                     if (response.data.success) {
-                        // Redirect based on role
-                        const role = response.data.user.role;
-                        if (role === 'admin') {
-                            window.location.href = '/dashboard/admin';
-                        } else if (role === 'capster') {
-                            window.location.href = '/dashboard/capster';
-                        } else {
-                            window.location.href = '/dashboard/customer';
-                        }
+                        // FIX: Use redirectTo from backend response (1 Account = 1 Role = 1 Dashboard)
+                        // This ensures consistent routing logic and prevents infinity loops
+                        const redirectUrl = response.data.redirectTo || '/dashboard/customer';
+                        window.location.href = redirectUrl;
                     }
                 } catch (error) {
                     const errorDiv = document.getElementById('error');

@@ -161,8 +161,18 @@ auth.post('/login', async (c) => {
       maxAge: 7 * 24 * 60 * 60
     });
     
+    // Determine dashboard redirect based on role (1 Account = 1 Role = 1 Dashboard)
+    const dashboardMap: Record<string, string> = {
+      'customer': '/dashboard/customer',
+      'capster': '/dashboard/capster',
+      'admin': '/dashboard/admin'
+    };
+    
+    const redirectTo = dashboardMap[user.role as string] || '/dashboard/customer';
+    
     return c.json({
       success: true,
+      redirectTo, // FIX: Added automatic redirect to prevent manual routing
       user: {
         id: user.id,
         email: user.email,
@@ -202,13 +212,17 @@ auth.get('/me', requireAuth, async (c) => {
   const user = c.get('user');
   
   return c.json({
-    id: user.id,
-    email: user.email,
-    role: user.role,
-    customer_name: user.customer_name,
-    customer_phone: user.customer_phone,
-    branch_id: user.branch_id,
-    is_approved: user.is_approved
+    success: true, // FIX: Added missing success field to prevent infinity loop
+    user: {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      customer_name: user.customer_name,
+      customer_phone: user.customer_phone,
+      branch_id: user.branch_id,
+      is_approved: user.is_approved,
+      loyalty_points: user.loyalty_points || 0
+    }
   });
 });
 

@@ -57,97 +57,231 @@ app.get('/dashboard/admin', (c) => {
   return c.redirect('/static/dashboard-admin');
 });
 
-// Home page
+// Home page - ULTRA-SOPHISTICATED UI
 app.get('/', (c) => {
   return c.html(`
     <!DOCTYPE html>
-    <html lang="id">
+    <html lang="id" class="dark">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>BALIK.LAGI - Platform Booking Barbershop</title>
+        <title>BALIK.LAGI - Enterprise Barbershop Platform</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
-        <link href="/static/style.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Inter', 'system-ui', 'sans-serif']
+                        },
+                        colors: {
+                            primary: '#d97706',
+                            dark: {
+                                50: '#f8fafc',
+                                800: '#1e293b',
+                                900: '#0f172a',
+                                950: '#020617'
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            .gradient-text {
+                background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glassmorphism {
+                background: rgba(15, 23, 42, 0.8);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+            }
+            .bento-card {
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            }
+            .bento-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.2);
+            }
+        </style>
     </head>
-    <body class="bg-gray-50">
-        <!-- Header -->
-        <header class="bg-gradient-to-r from-amber-600 to-amber-700 text-white shadow-lg">
-            <div class="container mx-auto px-4 py-6">
-                <div class="flex items-center justify-between">
+    <body class="bg-dark-950 text-gray-100">
+        <!-- Navigation - Glassmorphism Style -->
+        <header class="fixed top-0 left-0 right-0 z-50 glassmorphism">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-16">
                     <div class="flex items-center space-x-3">
-                        <i class="fas fa-cut text-3xl"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-primary to-orange-600 rounded-lg flex items-center justify-center">
+                            <i class="fas fa-cut text-white text-lg"></i>
+                        </div>
                         <div>
-                            <h1 class="text-2xl font-bold">BALIK.LAGI</h1>
-                            <p class="text-sm text-amber-100">Sekali Cocok, Pengen Balik Lagi</p>
+                            <h1 class="text-xl font-bold text-white">BALIK.LAGI</h1>
+                            <p class="text-xs text-gray-400">Enterprise Grade</p>
                         </div>
                     </div>
-                    <nav class="hidden md:flex space-x-6">
-                        <a href="/login" class="hover:text-amber-200 transition">Login</a>
-                        <a href="/register" class="hover:text-amber-200 transition">Daftar</a>
+                    <nav class="hidden md:flex items-center space-x-8">
+                        <a href="#features" class="text-gray-300 hover:text-white transition text-sm font-medium">Features</a>
+                        <a href="#pricing" class="text-gray-300 hover:text-white transition text-sm font-medium">Pricing</a>
+                        <a href="/login" class="text-gray-300 hover:text-white transition text-sm font-medium">Login</a>
+                        <a href="/register" class="px-6 py-2.5 bg-gradient-to-r from-primary to-orange-600 text-white rounded-lg font-medium hover:shadow-lg hover:shadow-primary/50 transition-all">Get Started</a>
                     </nav>
                 </div>
             </div>
         </header>
 
-        <!-- Hero Section -->
-        <section class="py-20 bg-white">
-            <div class="container mx-auto px-4 text-center">
-                <h2 class="text-5xl font-bold text-gray-800 mb-6">
-                    Platform Booking Barbershop
-                    <span class="text-amber-600">Terpercaya</span>
-                </h2>
-                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-                    Booking online, pilih capster favorit, dan dapatkan poin loyalty setiap kunjungan
-                </p>
-                <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <a href="/register" class="bg-amber-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-amber-700 transition shadow-lg">
-                        <i class="fas fa-user-plus mr-2"></i>
-                        Daftar Sekarang
-                    </a>
-                    <a href="/login" class="bg-gray-200 text-gray-800 px-8 py-4 rounded-lg font-semibold hover:bg-gray-300 transition">
-                        <i class="fas fa-sign-in-alt mr-2"></i>
-                        Login
-                    </a>
+        <!-- Hero Section - Modern & Sophisticated -->
+        <section class="pt-32 pb-20 px-4 relative overflow-hidden">
+            <!-- Background Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-950 to-black"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/20 via-transparent to-transparent"></div>
+            
+            <div class="max-w-7xl mx-auto relative">
+                <div class="text-center">
+                    <!-- Badge -->
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-dark-900 border border-primary/20 mb-8">
+                        <span class="relative flex h-2 w-2 mr-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                        </span>
+                        <span class="text-sm text-gray-300">Enterprise Barbershop Platform</span>
+                    </div>
+                    
+                    <!-- Main Heading -->
+                    <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6 tracking-tight">
+                        <span class="gradient-text">Transform</span><br/>
+                        <span class="text-white">Your Barbershop</span>
+                    </h1>
+                    
+                    <p class="text-xl md:text-2xl text-gray-400 mb-12 max-w-3xl mx-auto leading-relaxed">
+                        The most sophisticated booking platform designed for modern barbershops.
+                        <span class="text-white font-medium">Seamless. Elegant. Powerful.</span>
+                    </p>
+                    
+                    <!-- CTA Buttons -->
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <a href="/register" class="group relative px-8 py-4 bg-gradient-to-r from-primary to-orange-600 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/50">
+                            <span class="relative z-10 flex items-center">
+                                <i class="fas fa-sparkles mr-2"></i>
+                                Start Free Trial
+                            </span>
+                            <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                        </a>
+                        <a href="/login" class="px-8 py-4 border-2 border-gray-700 text-white rounded-xl font-semibold hover:border-primary/50 hover:bg-dark-900 transition-all">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Sign In
+                        </a>
+                    </div>
+                    
+                    <!-- Trust Indicators -->
+                    <div class="mt-16 flex justify-center items-center space-x-12 text-sm text-gray-500">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-check-circle text-primary"></i>
+                            <span>No credit card required</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-lock text-primary"></i>
+                            <span>Enterprise security</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-bolt text-primary"></i>
+                            <span>Deploy in minutes</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section class="py-16 bg-gray-50">
-            <div class="container mx-auto px-4">
-                <h3 class="text-3xl font-bold text-center mb-12">Kenapa BALIK.LAGI?</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Feature 1 -->
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-calendar-check text-amber-600 text-2xl"></i>
+        <!-- Features Section - Bento Grid Layout -->
+        <section id="features" class="py-24 px-4 bg-dark-950\">
+            <div class="max-w-7xl mx-auto">
+                <!-- Section Header -->
+                <div class="text-center mb-16">
+                    <span class="inline-block px-4 py-2 bg-primary/10 text-primary rounded-full text-sm font-semibold mb-4\">FEATURES</span>
+                    <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white\">Everything you need,<br/>nothing you don't</h2>
+                    <p class="text-xl text-gray-400 max-w-2xl mx-auto\">Powerful features that scale with your business</p>
+                </div>
+
+                <!-- Bento Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Large Feature Card -->
+                    <div class="lg:col-span-2 lg:row-span-2 bento-card bg-gradient-to-br from-dark-900 to-dark-800 p-8 rounded-2xl border border-gray-800 hover:border-primary/30">
+                        <div class="flex items-start justify-between mb-6">
+                            <div class="w-14 h-14 bg-primary/20 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-calendar-check text-primary text-2xl"></i>
+                            </div>
+                            <span class="px-3 py-1 bg-primary/10 text-primary text-xs rounded-full font-semibold">MOST POPULAR</span>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Booking Online</h4>
-                        <p class="text-gray-600">
-                            Pilih tanggal, jam, dan capster favorit. No antri!
+                        <h3 class="text-2xl font-bold text-white mb-3">Intelligent Booking System</h3>
+                        <p class="text-gray-400 mb-6 text-lg">
+                            Seamless appointment scheduling with real-time availability. Customers choose their preferred capster, time, and service in seconds.
+                        </p>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex items-center space-x-2 text-sm text-gray-300">
+                                <i class="fas fa-check text-primary"></i>
+                                <span>Real-time sync</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-gray-300">
+                                <i class="fas fa-check text-primary"></i>
+                                <span>Auto-confirmation</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-gray-300">
+                                <i class="fas fa-check text-primary"></i>
+                                <span>WhatsApp reminders</span>
+                            </div>
+                            <div class="flex items-center space-x-2 text-sm text-gray-300">
+                                <i class="fas fa-check text-primary"></i>
+                                <span>No-show protection</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Feature Card 1 -->
+                    <div class="bento-card bg-gradient-to-br from-dark-900 to-dark-800 p-6 rounded-2xl border border-gray-800 hover:border-primary/30">
+                        <div class="w-12 h-12 bg-orange-500/20 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-gift text-orange-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Loyalty Program</h3>
+                        <p class="text-gray-400 text-sm">
+                            Automatic rewards system that keeps customers coming back
                         </p>
                     </div>
 
-                    <!-- Feature 2 -->
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-gift text-amber-600 text-2xl"></i>
+                    <!-- Feature Card 2 -->
+                    <div class="bento-card bg-gradient-to-br from-dark-900 to-dark-800 p-6 rounded-2xl border border-gray-800 hover:border-primary/30">
+                        <div class="w-12 h-12 bg-blue-500/20 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-chart-line text-blue-500 text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Loyalty Rewards</h4>
-                        <p class="text-gray-600">
-                            Kumpulkan poin setiap kunjungan, tukar hadiah menarik
+                        <h3 class="text-xl font-bold text-white mb-2">Analytics Dashboard</h3>
+                        <p class="text-gray-400 text-sm">
+                            Real-time insights into your business performance
                         </p>
                     </div>
 
-                    <!-- Feature 3 -->
-                    <div class="bg-white p-8 rounded-lg shadow-md text-center">
-                        <div class="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <i class="fas fa-chart-line text-amber-600 text-2xl"></i>
+                    <!-- Feature Card 3 -->
+                    <div class="bento-card bg-gradient-to-br from-dark-900 to-dark-800 p-6 rounded-2xl border border-gray-800 hover:border-primary/30">
+                        <div class="w-12 h-12 bg-green-500/20 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-green-500 text-xl"></i>
                         </div>
-                        <h4 class="text-xl font-bold mb-3">Tracking History</h4>
-                        <p class="text-gray-600">
-                            Lihat riwayat kunjungan dan preferensi Anda
+                        <h3 class="text-xl font-bold text-white mb-2">Customer Profiles</h3>
+                        <p class="text-gray-400 text-sm">
+                            Track preferences and history for personalized service
+                        </p>
+                    </div>
+
+                    <!-- Feature Card 4 -->
+                    <div class="lg:col-span-2 bento-card bg-gradient-to-br from-dark-900 to-dark-800 p-6 rounded-2xl border border-gray-800 hover:border-primary/30">
+                        <div class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-4">
+                            <i class="fas fa-mobile-alt text-purple-500 text-xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Mobile-First Experience</h3>
+                        <p class="text-gray-400 text-sm">
+                            Optimized for mobile devices. Your customers book on the go, anywhere, anytime.
                         </p>
                     </div>
                 </div>

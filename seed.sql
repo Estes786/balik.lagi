@@ -41,5 +41,6 @@ VALUES
 INSERT OR IGNORE INTO access_keys (key_code, key_type, branch_id, max_usage)
 VALUES 
   ('ADMIN_BOZQ_ACCESS_1', 'admin', 'branch_bozq_001', 5),
+  ('ADMIN_1767932889498', 'admin', 'branch_bozq_001', 10),
   ('CAPSTER_1767932889498', 'capster', 'branch_bozq_001', 50),
   ('CUSTOMER_1767932889498', 'customer', 'branch_bozq_001', -1);

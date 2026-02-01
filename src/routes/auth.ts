@@ -55,8 +55,9 @@ auth.post('/register', async (c) => {
     // Determine branch_id (from access key or provided)
     const finalBranchId = keyValidation.branchId || branch_id;
     
-    // Auto-approve customers, require approval for capsters/admins
-    const isApproved = role === 'customer' ? 1 : 0;
+    // FIX: Auto-approve ALL roles (customer, capster, admin) for seamless onboarding
+    // This allows immediate access to dashboards without admin approval
+    const isApproved = 1; // Auto-approve all roles
     
     // Insert user
     await c.env.DB
@@ -142,13 +143,8 @@ auth.post('/login', async (c) => {
       return c.json({ error: 'Invalid credentials' }, 401);
     }
     
-    // Check if approved (for capsters/admins)
-    if (user.role !== 'customer' && user.is_approved === 0) {
-      return c.json({
-        error: 'Account pending approval',
-        message: 'Your account is awaiting admin approval'
-      }, 403);
-    }
+    // FIX: Removed approval check since all roles are now auto-approved
+    // This enables immediate dashboard access for all roles (customer, capster, admin)
     
     // Create session
     const sessionId = await createSession(c.env.DB, user.id as string);

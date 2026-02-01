@@ -6,11 +6,15 @@
     <title>Capster Dashboard - BALIK.LAGI</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif']
+                    },
                     colors: {
                         primary: '#d97706',
                         dark: {
@@ -38,27 +42,41 @@
             backdrop-filter: blur(10px);
         }
         .bento-card:hover {
-            border-color: rgba(217, 119, 6, 0.3);
-            box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.1);
+            transform: translateY(-2px);
+            border-color: rgba(217, 119, 6, 0.4);
+            box-shadow: 0 25px 30px -5px rgba(217, 119, 6, 0.15);
         }
         .stat-card {
             background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 25px 35px -5px rgba(217, 119, 6, 0.3);
+        }
+        .glassmorphism {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.1);
         }
         .queue-item {
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .queue-item:hover {
-            transform: translateY(-2px);
+            transform: translateX(4px);
+            box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.2);
         }
     </style>
 </head>
 <body class="bg-dark-950 text-gray-100 min-h-screen">
     <!-- Navigation -->
-    <nav class="bg-dark-900 border-b border-dark-800 sticky top-0 z-50">
+    <nav class="glassmorphism sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-16">
                 <div class="flex items-center space-x-3">
-                    <i class="fas fa-cut text-primary text-2xl"></i>
+                    <div class="w-10 h-10 bg-gradient-to-br from-primary to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-primary/30">
+                        <i class="fas fa-cut text-white text-lg"></i>
+                    </div>
                     <div>
                         <h1 class="text-xl font-bold text-white">BALIK.LAGI</h1>
                         <p class="text-xs text-gray-400">Capster Dashboard</p>

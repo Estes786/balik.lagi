@@ -299,11 +299,106 @@ app.get('/', (c) => {
             </div>
         </section>
 
-        <!-- Footer -->
-        <footer class="bg-gray-800 text-white py-8">
-            <div class="container mx-auto px-4 text-center">
-                <p class="mb-2">&copy; 2026 BALIK.LAGI - Platform Booking Barbershop</p>
-                <p class="text-gray-400 text-sm">Made with <i class="fas fa-heart text-red-500"></i> for Indonesian Barbershops</p>
+        <!-- Footer - Ultra Sophisticated Design -->
+        <footer class="bg-dark-950 border-t border-gray-800 pt-16 pb-8">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <!-- Main Footer Content -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                    <!-- Brand Section -->
+                    <div class="lg:col-span-2">
+                        <div class="flex items-center space-x-3 mb-4">
+                            <div class="w-12 h-12 bg-gradient-to-br from-primary to-orange-600 rounded-xl flex items-center justify-center">
+                                <i class="fas fa-cut text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-white">BALIK.LAGI</h3>
+                                <p class="text-xs text-gray-400">Enterprise Grade</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-400 text-sm mb-6 max-w-xs">
+                            Platform booking barbershop paling canggih di Indonesia. Seamless, elegant, powerful.
+                        </p>
+                        <!-- Social Media -->
+                        <div class="flex space-x-3">
+                            <a href="#" class="w-10 h-10 bg-dark-900 hover:bg-primary/20 rounded-lg flex items-center justify-center text-gray-400 hover:text-primary transition-all">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-dark-900 hover:bg-primary/20 rounded-lg flex items-center justify-center text-gray-400 hover:text-primary transition-all">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-dark-900 hover:bg-primary/20 rounded-lg flex items-center justify-center text-gray-400 hover:text-primary transition-all">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            <a href="#" class="w-10 h-10 bg-dark-900 hover:bg-primary/20 rounded-lg flex items-center justify-center text-gray-400 hover:text-primary transition-all">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Product Links -->
+                    <div>
+                        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Product</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#features" class="text-gray-400 hover:text-primary transition text-sm">Features</a></li>
+                            <li><a href="#pricing" class="text-gray-400 hover:text-primary transition text-sm">Pricing</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">API</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Integrations</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Changelog</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Company Links -->
+                    <div>
+                        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Company</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">About Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Careers</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Blog</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Press Kit</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Contact</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Support Links -->
+                    <div>
+                        <h4 class="text-white font-semibold mb-4 text-sm uppercase tracking-wider">Support</h4>
+                        <ul class="space-y-3">
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Help Center</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Documentation</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Community</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Status</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-primary transition text-sm">Contact Support</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="border-t border-gray-800 pt-8">
+                    <!-- Bottom Footer -->
+                    <div class="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                        <!-- Copyright -->
+                        <div class="text-gray-400 text-sm">
+                            <p>&copy; 2026 <span class="text-white font-semibold">BALIK.LAGI</span>. All rights reserved.</p>
+                            <p class="text-xs mt-1">Made with <i class="fas fa-heart text-red-500"></i> for Indonesian Barbershops</p>
+                        </div>
+
+                        <!-- Legal Links -->
+                        <div class="flex space-x-6 text-sm">
+                            <a href="#" class="text-gray-400 hover:text-white transition">Privacy Policy</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition">Terms of Service</a>
+                            <a href="#" class="text-gray-400 hover:text-white transition">Cookie Policy</a>
+                        </div>
+
+                        <!-- Language Selector -->
+                        <div class="flex items-center space-x-2">
+                            <button class="px-4 py-2 bg-dark-900 hover:bg-dark-800 text-gray-300 rounded-lg text-sm transition-all flex items-center space-x-2">
+                                <i class="fas fa-globe"></i>
+                                <span>Bahasa Indonesia</span>
+                                <i class="fas fa-chevron-down text-xs"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </footer>
 
@@ -313,58 +408,175 @@ app.get('/', (c) => {
   `);
 });
 
-// Login page
+// Login page - Ultra Sophisticated Design
 app.get('/login', (c) => {
   return c.html(`
     <!DOCTYPE html>
-    <html lang="id">
+    <html lang="id" class="dark">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Login - BALIK.LAGI</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Inter', 'system-ui', 'sans-serif']
+                        },
+                        colors: {
+                            primary: '#d97706',
+                            dark: {
+                                800: '#1e293b',
+                                900: '#0f172a',
+                                950: '#020617'
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            .gradient-text {
+                background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glassmorphism {
+                background: rgba(15, 23, 42, 0.8);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+            }
+            .animated-input {
+                position: relative;
+            }
+            .animated-input input:focus + label,
+            .animated-input input:not(:placeholder-shown) + label {
+                transform: translateY(-1.5rem) scale(0.85);
+                color: #d97706;
+            }
+            .animated-input label {
+                position: absolute;
+                left: 1rem;
+                top: 1rem;
+                transition: all 0.2s ease;
+                pointer-events: none;
+                color: #9ca3af;
+            }
+        </style>
     </head>
-    <body class="bg-gray-50">
-        <div class="min-h-screen flex items-center justify-center py-12 px-4">
-            <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <body class="bg-dark-950 min-h-screen flex items-center justify-center py-12 px-4 relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-950 to-black"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
+        
+        <!-- Login Card -->
+        <div class="relative w-full max-w-md">
+            <!-- Back to Home Button -->
+            <div class="mb-6">
+                <a href="/" class="inline-flex items-center text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="text-sm">Kembali ke Home</span>
+                </a>
+            </div>
+
+            <!-- Card -->
+            <div class="glassmorphism rounded-2xl p-8 shadow-2xl">
+                <!-- Logo & Title -->
                 <div class="text-center mb-8">
-                    <i class="fas fa-cut text-amber-600 text-4xl mb-3"></i>
-                    <h2 class="text-3xl font-bold text-gray-800">Login</h2>
-                    <p class="text-gray-600 mt-2">Masuk ke akun BALIK.LAGI Anda</p>
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/50">
+                        <i class="fas fa-cut text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-2">
+                        <span class="gradient-text">Selamat Datang Kembali</span>
+                    </h2>
+                    <p class="text-gray-400">Masuk ke akun BALIK.LAGI Anda</p>
                 </div>
 
+                <!-- Login Form -->
                 <form id="loginForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" name="email" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                               placeholder="email@example.com">
+                    <!-- Email Field with Animated Label -->
+                    <div class="animated-input">
+                        <input 
+                            type="email" 
+                            name="email" 
+                            required
+                            placeholder=" "
+                            class="w-full px-4 py-4 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                        >
+                        <label class="text-sm font-medium">Email Address</label>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" name="password" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
-                               placeholder="********">
+                    <!-- Password Field with Animated Label -->
+                    <div class="animated-input">
+                        <input 
+                            type="password" 
+                            name="password" 
+                            required
+                            placeholder=" "
+                            class="w-full px-4 py-4 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                        >
+                        <label class="text-sm font-medium">Password</label>
                     </div>
 
-                    <div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"></div>
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center text-gray-400 cursor-pointer hover:text-white transition">
+                            <input type="checkbox" class="w-4 h-4 rounded border-gray-700 bg-dark-900 text-primary focus:ring-2 focus:ring-primary mr-2">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-primary hover:text-orange-500 transition font-medium">Lupa password?</a>
+                    </div>
 
-                    <button type="submit" 
-                            class="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition">
-                        <i class="fas fa-sign-in-alt mr-2"></i>
-                        Login
+                    <!-- Error Message -->
+                    <div id="error" class="hidden bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl text-sm"></div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="group relative w-full py-4 bg-gradient-to-r from-primary to-orange-600 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/50"
+                    >
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-sign-in-alt mr-2"></i>
+                            Login
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </button>
                 </form>
 
-                <p class="text-center mt-6 text-gray-600">
-                    Belum punya akun? <a href="/register" class="text-amber-600 hover:text-amber-700 font-semibold">Daftar di sini</a>
+                <!-- Divider -->
+                <div class="my-8 flex items-center">
+                    <div class="flex-1 border-t border-gray-700"></div>
+                    <span class="px-4 text-gray-500 text-sm">atau</span>
+                    <div class="flex-1 border-t border-gray-700"></div>
+                </div>
+
+                <!-- Social Login (Optional) -->
+                <div class="space-y-3">
+                    <button class="w-full py-3 bg-dark-900 hover:bg-dark-800 border border-gray-700 text-gray-300 rounded-xl font-medium transition-all flex items-center justify-center space-x-2">
+                        <i class="fab fa-google text-red-500"></i>
+                        <span>Continue with Google</span>
+                    </button>
+                </div>
+
+                <!-- Register Link -->
+                <p class="text-center mt-8 text-gray-400">
+                    Belum punya akun? 
+                    <a href="/register" class="text-primary hover:text-orange-500 font-semibold transition ml-1">Daftar sekarang</a>
                 </p>
-                
-                <p class="text-center mt-2">
-                    <a href="/" class="text-gray-600 hover:text-gray-700"><i class="fas fa-home mr-1"></i>Kembali ke Home</a>
-                </p>
+            </div>
+
+            <!-- Trust Badge -->
+            <div class="mt-6 text-center">
+                <div class="inline-flex items-center space-x-2 text-xs text-gray-500">
+                    <i class="fas fa-shield-alt text-primary"></i>
+                    <span>Secured by enterprise-grade encryption</span>
+                </div>
             </div>
         </div>
 
@@ -378,19 +590,41 @@ app.get('/login', (c) => {
                     password: formData.get('password')
                 };
 
+                // Show loading state
+                const submitButton = e.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Loading...';
+                submitButton.disabled = true;
+
                 try {
                     const response = await axios.post('/api/auth/login', data);
                     
                     if (response.data.success) {
                         // FIX: Use redirectTo from backend response (1 Account = 1 Role = 1 Dashboard)
-                        // This ensures consistent routing logic and prevents infinity loops
                         const redirectUrl = response.data.redirectTo || '/dashboard/customer';
-                        window.location.href = redirectUrl;
+                        
+                        // Show success message
+                        submitButton.innerHTML = '<i class="fas fa-check mr-2"></i>Success! Redirecting...';
+                        submitButton.classList.add('bg-green-600');
+                        
+                        // Redirect after short delay
+                        setTimeout(() => {
+                            window.location.href = redirectUrl;
+                        }, 500);
                     }
                 } catch (error) {
                     const errorDiv = document.getElementById('error');
-                    errorDiv.textContent = error.response?.data?.error || 'Login failed';
+                    errorDiv.textContent = error.response?.data?.error || 'Login failed. Please try again.';
                     errorDiv.classList.remove('hidden');
+                    
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Hide error after 5 seconds
+                    setTimeout(() => {
+                        errorDiv.classList.add('hidden');
+                    }, 5000);
                 }
             });
         </script>
@@ -399,90 +633,187 @@ app.get('/login', (c) => {
   `);
 });
 
-// Register page
+// Register page - Ultra Sophisticated Design
 app.get('/register', (c) => {
   return c.html(`
     <!DOCTYPE html>
-    <html lang="id">
+    <html lang="id" class="dark">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Daftar - BALIK.LAGI</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        <script>
+            tailwind.config = {
+                darkMode: 'class',
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['Inter', 'system-ui', 'sans-serif']
+                        },
+                        colors: {
+                            primary: '#d97706',
+                            dark: {
+                                800: '#1e293b',
+                                900: '#0f172a',
+                                950: '#020617'
+                            }
+                        }
+                    }
+                }
+            }
+        </script>
+        <style>
+            .gradient-text {
+                background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            .glassmorphism {
+                background: rgba(15, 23, 42, 0.8);
+                backdrop-filter: blur(12px);
+                border: 1px solid rgba(148, 163, 184, 0.1);
+            }
+        </style>
     </head>
-    <body class="bg-gray-50">
-        <div class="min-h-screen flex items-center justify-center py-12 px-4">
-            <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <body class="bg-dark-950 min-h-screen flex items-center justify-center py-12 px-4 relative overflow-hidden">
+        <!-- Background Effects -->
+        <div class="absolute inset-0 bg-gradient-to-br from-dark-900 via-dark-950 to-black"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent"></div>
+        
+        <!-- Register Card -->
+        <div class="relative w-full max-w-2xl">
+            <!-- Back to Home Button -->
+            <div class="mb-6">
+                <a href="/" class="inline-flex items-center text-gray-400 hover:text-white transition-colors">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    <span class="text-sm">Kembali ke Home</span>
+                </a>
+            </div>
+
+            <!-- Card -->
+            <div class="glassmorphism rounded-2xl p-8 shadow-2xl">
+                <!-- Logo & Title -->
                 <div class="text-center mb-8">
-                    <i class="fas fa-user-plus text-amber-600 text-4xl mb-3"></i>
-                    <h2 class="text-3xl font-bold text-gray-800">Daftar</h2>
-                    <p class="text-gray-600 mt-2">Buat akun BALIK.LAGI baru</p>
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-primary/50">
+                        <i class="fas fa-user-plus text-white text-2xl"></i>
+                    </div>
+                    <h2 class="text-3xl font-bold mb-2">
+                        <span class="gradient-text">Bergabung Sekarang</span>
+                    </h2>
+                    <p class="text-gray-400">Buat akun BALIK.LAGI baru</p>
                 </div>
 
-                <form id="registerForm" class="space-y-6">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Role</label>
-                        <select name="role" required
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500">
-                            <option value="">Pilih Role</option>
-                            <option value="customer">Customer</option>
-                            <option value="capster">Capster</option>
-                            <option value="admin">Admin</option>
-                        </select>
+                <!-- Register Form -->
+                <form id="registerForm" class="space-y-5">
+                    <!-- Two Columns Layout -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <!-- Role Select -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-user-tag mr-2 text-primary"></i>Role
+                            </label>
+                            <select name="role" required
+                                    class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all">
+                                <option value="">Pilih Role</option>
+                                <option value="customer">Customer</option>
+                                <option value="capster">Capster</option>
+                                <option value="admin">Admin</option>
+                            </select>
+                        </div>
+
+                        <!-- Access Key -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-key mr-2 text-primary"></i>Access Key
+                            </label>
+                            <input type="text" name="access_key" required
+                                   class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                                   placeholder="CUSTOMER_XXXXX">
+                        </div>
+
+                        <!-- Full Name -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-user mr-2 text-primary"></i>Nama Lengkap
+                            </label>
+                            <input type="text" name="customer_name" required
+                                   class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                                   placeholder="John Doe">
+                        </div>
+
+                        <!-- Phone Number -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-phone mr-2 text-primary"></i>Nomor HP
+                            </label>
+                            <input type="tel" name="customer_phone"
+                                   class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                                   placeholder="+628123456789">
+                        </div>
+
+                        <!-- Email -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-envelope mr-2 text-primary"></i>Email
+                            </label>
+                            <input type="email" name="email" required
+                                   class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                                   placeholder="email@example.com">
+                        </div>
+
+                        <!-- Password -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-300 mb-2">
+                                <i class="fas fa-lock mr-2 text-primary"></i>Password
+                            </label>
+                            <input type="password" name="password" required
+                                   class="w-full px-4 py-3 bg-dark-900 border border-gray-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent text-white transition-all"
+                                   placeholder="Minimal 6 karakter">
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Access Key</label>
-                        <input type="text" name="access_key" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                               placeholder="CUSTOMER_XXXXX">
+                    <!-- Terms & Conditions -->
+                    <div class="flex items-start space-x-2">
+                        <input type="checkbox" required class="w-5 h-5 mt-1 rounded border-gray-700 bg-dark-900 text-primary focus:ring-2 focus:ring-primary">
+                        <label class="text-sm text-gray-400">
+                            Saya setuju dengan <a href="#" class="text-primary hover:text-orange-500 transition">Terms of Service</a> 
+                            dan <a href="#" class="text-primary hover:text-orange-500 transition">Privacy Policy</a>
+                        </label>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nama</label>
-                        <input type="text" name="customer_name" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                               placeholder="Nama lengkap">
-                    </div>
+                    <!-- Error Message -->
+                    <div id="error" class="hidden bg-red-500/10 border border-red-500/50 text-red-400 px-4 py-3 rounded-xl text-sm"></div>
 
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Nomor HP</label>
-                        <input type="tel" name="customer_phone"
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                               placeholder="+628123456789">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
-                        <input type="email" name="email" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                               placeholder="email@example.com">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input type="password" name="password" required
-                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500"
-                               placeholder="Minimal 6 karakter">
-                    </div>
-
-                    <div id="error" class="hidden bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded"></div>
-
-                    <button type="submit"
-                            class="w-full bg-amber-600 text-white py-3 rounded-lg font-semibold hover:bg-amber-700 transition">
-                        <i class="fas fa-user-plus mr-2"></i>
-                        Daftar
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="group relative w-full py-4 bg-gradient-to-r from-primary to-orange-600 text-white rounded-xl font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-primary/50"
+                    >
+                        <span class="relative z-10 flex items-center justify-center">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Buat Akun
+                        </span>
+                        <div class="absolute inset-0 bg-gradient-to-r from-orange-600 to-primary opacity-0 group-hover:opacity-100 transition-opacity"></div>
                     </button>
                 </form>
 
-                <p class="text-center mt-6 text-gray-600">
-                    Sudah punya akun? <a href="/login" class="text-amber-600 hover:text-amber-700 font-semibold">Login di sini</a>
+                <!-- Login Link -->
+                <p class="text-center mt-8 text-gray-400">
+                    Sudah punya akun? 
+                    <a href="/login" class="text-primary hover:text-orange-500 font-semibold transition ml-1">Login sekarang</a>
                 </p>
-                
-                <p class="text-center mt-2">
-                    <a href="/" class="text-gray-600 hover:text-gray-700"><i class="fas fa-home mr-1"></i>Kembali ke Home</a>
-                </p>
+            </div>
+
+            <!-- Trust Badge -->
+            <div class="mt-6 text-center">
+                <div class="inline-flex items-center space-x-2 text-xs text-gray-500">
+                    <i class="fas fa-shield-alt text-primary"></i>
+                    <span>Your information is protected with enterprise-grade security</span>
+                </div>
             </div>
         </div>
 
@@ -500,17 +831,38 @@ app.get('/register', (c) => {
                     customer_phone: formData.get('customer_phone')
                 };
 
+                // Show loading state
+                const submitButton = e.target.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating account...';
+                submitButton.disabled = true;
+
                 try {
                     const response = await axios.post('/api/auth/register', data);
                     
                     if (response.data.success) {
-                        alert('Registrasi berhasil! Silakan login.');
-                        window.location.href = '/login';
+                        // Show success message
+                        submitButton.innerHTML = '<i class="fas fa-check mr-2"></i>Success! Redirecting to login...';
+                        submitButton.classList.add('bg-green-600');
+                        
+                        // Redirect after short delay
+                        setTimeout(() => {
+                            window.location.href = '/login';
+                        }, 1500);
                     }
                 } catch (error) {
                     const errorDiv = document.getElementById('error');
-                    errorDiv.textContent = error.response?.data?.error || 'Registration failed';
+                    errorDiv.textContent = error.response?.data?.error || 'Registration failed. Please try again.';
                     errorDiv.classList.remove('hidden');
+                    
+                    // Reset button
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Hide error after 5 seconds
+                    setTimeout(() => {
+                        errorDiv.classList.add('hidden');
+                    }, 5000);
                 }
             });
         </script>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capster Dashboard - BALIK.LAGI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d97706',
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bento-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .bento-card:hover {
+            border-color: rgba(217, 119, 6, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.1);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+        }
+        .queue-item {
+            transition: all 0.3s ease;
+        }
+        .queue-item:hover {
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="bg-dark-950 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-dark-900 border-b border-dark-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-cut text-primary text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">BALIK.LAGI</h1>
+                        <p class="text-xs text-gray-400">Capster Dashboard</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400" id="capsterName">Loading...</span>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Today's Queue -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Today's Queue</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="todayQueue">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-clock mr-1"></i>Active bookings
+                </p>
+            </div>
+
+            <!-- Completed Today -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Completed</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="completedToday">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-check-circle text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-chart-line mr-1"></i>Today's services
+                </p>
+            </div>
+
+            <!-- Rating -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Rating</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="rating">4.8</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-star text-yellow-400 text-xl"></i>
+                    </div>
+                </div>
+                <div class="flex text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star ml-1"></i>
+                    <i class="fas fa-star ml-1"></i>
+                    <i class="fas fa-star ml-1"></i>
+                    <i class="fas fa-star-half-alt ml-1"></i>
+                </div>
+            </div>
+
+            <!-- Total Customers -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Total Customers</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="totalCustomers">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user-friends text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-xs">Lifetime served</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Current Queue (2 columns) -->
+            <div class="lg:col-span-2 bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-white">
+                        <i class="fas fa-list-ul text-primary mr-2"></i>
+                        Queue Management
+                    </h2>
+                    <button onclick="refreshQueue()" class="bg-dark-800 hover:bg-dark-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                        <i class="fas fa-sync-alt mr-2"></i>Refresh
+                    </button>
+                </div>
+
+                <!-- Filter Tabs -->
+                <div class="flex space-x-2 mb-6">
+                    <button onclick="filterQueue('all')" id="tab-all" class="px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white">
+                        All
+                    </button>
+                    <button onclick="filterQueue('pending')" id="tab-pending" class="px-4 py-2 rounded-lg text-sm font-medium bg-dark-800 text-gray-400 hover:text-white">
+                        Pending
+                    </button>
+                    <button onclick="filterQueue('confirmed')" id="tab-confirmed" class="px-4 py-2 rounded-lg text-sm font-medium bg-dark-800 text-gray-400 hover:text-white">
+                        Confirmed
+                    </button>
+                </div>
+
+                <div id="queueList" class="space-y-4">
+                    <!-- Loading skeleton -->
+                    <div class="animate-pulse space-y-3">
+                        <div class="h-24 bg-dark-800 rounded-lg"></div>
+                        <div class="h-24 bg-dark-800 rounded-lg"></div>
+                        <div class="h-24 bg-dark-800 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Quick Stats -->
+                <div class="bento-card rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-white mb-4">
+                        <i class="fas fa-chart-pie text-primary mr-2"></i>
+                        Performance
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">This Week</span>
+                                <span class="text-white font-medium" id="weeklyCount">0 cuts</span>
+                            </div>
+                            <div class="w-full bg-dark-800 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 75%" id="weeklyProgress"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span class="text-gray-400">This Month</span>
+                                <span class="text-white font-medium" id="monthlyCount">0 cuts</span>
+                            </div>
+                            <div class="w-full bg-dark-800 rounded-full h-2">
+                                <div class="bg-primary h-2 rounded-full" style="width: 60%" id="monthlyProgress"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Schedule -->
+                <div class="bento-card rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-white mb-4">
+                        <i class="fas fa-calendar-alt text-primary mr-2"></i>
+                        Next 3 Hours
+                    </h3>
+                    <div id="upcomingSchedule" class="space-y-3">
+                        <p class="text-sm text-gray-500">Loading...</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bento-card rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-white mb-4">
+                        <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                        Quick Actions
+                    </h3>
+                    <div class="space-y-2">
+                        <button onclick="refreshQueue()" class="w-full bg-dark-800 hover:bg-dark-700 text-white py-2 rounded-lg text-sm transition">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh Queue
+                        </button>
+                        <button onclick="viewHistory()" class="w-full bg-dark-800 hover:bg-dark-700 text-white py-2 rounded-lg text-sm transition">
+                            <i class="fas fa-history mr-2"></i>View History
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        let userData = null;
+        let allBookings = [];
+        let currentFilter = 'all';
+
+        async function loadDashboard() {
+            try {
+                // Get current user
+                const userResponse = await axios.get('/api/auth/me');
+                if (!userResponse.data.success || userResponse.data.user.role !== 'capster') {
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                userData = userResponse.data.user;
+                document.getElementById('capsterName').textContent = userData.customer_name || userData.email;
+
+                // Load bookings
+                await refreshQueue();
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                if (error.response?.status === 401) {
+                    window.location.href = '/login';
+                }
+            }
+        }
+
+        async function refreshQueue() {
+            try {
+                const bookingsResponse = await axios.get('/api/bookings/my-bookings');
+                allBookings = bookingsResponse.data.bookings || [];
+
+                // Calculate stats
+                const today = new Date().toDateString();
+                const todayBookings = allBookings.filter(b => 
+                    new Date(b.booking_date).toDateString() === today
+                );
+                const activeToday = todayBookings.filter(b => 
+                    b.status === 'pending' || b.status === 'confirmed'
+                );
+                const completedToday = todayBookings.filter(b => b.status === 'completed');
+
+                document.getElementById('todayQueue').textContent = activeToday.length;
+                document.getElementById('completedToday').textContent = completedToday.length;
+                document.getElementById('totalCustomers').textContent = allBookings.length;
+
+                // Display queue
+                displayQueue();
+                displayUpcomingSchedule();
+
+            } catch (error) {
+                console.error('Error refreshing queue:', error);
+            }
+        }
+
+        function displayQueue() {
+            const container = document.getElementById('queueList');
+            let bookings = allBookings;
+
+            // Filter bookings
+            if (currentFilter !== 'all') {
+                bookings = bookings.filter(b => b.status === currentFilter);
+            }
+
+            // Sort by date
+            bookings = bookings.sort((a, b) => new Date(a.booking_date) - new Date(b.booking_date));
+
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-inbox text-gray-600 text-4xl mb-3"></i>
+                        <p class="text-gray-400">No bookings found</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookings.slice(0, 10).map(booking => {
+                const date = new Date(booking.booking_date);
+                const isToday = date.toDateString() === new Date().toDateString();
+                
+                const statusColors = {
+                    'pending': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
+                    'confirmed': 'bg-blue-500/20 text-blue-400 border-blue-500/30',
+                    'completed': 'bg-green-500/20 text-green-400 border-green-500/30',
+                    'cancelled': 'bg-red-500/20 text-red-400 border-red-500/30'
+                };
+                const statusClass = statusColors[booking.status] || 'bg-gray-500/20 text-gray-400';
+
+                return `
+                    <div class="queue-item bg-dark-800 border-2 ${statusClass.split(' ')[2] || 'border-dark-700'} rounded-lg p-4">
+                        <div class="flex justify-between items-start mb-3">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="px-3 py-1 ${statusClass.split(' ').slice(0,2).join(' ')} rounded-full text-xs font-medium border">
+                                        ${booking.status}
+                                    </span>
+                                    ${isToday ? '<span class="px-2 py-1 bg-red-500/20 text-red-400 rounded-full text-xs">Today</span>' : ''}
+                                </div>
+                                <h4 class="font-semibold text-white text-lg">${booking.customer_name || 'Customer'}</h4>
+                                <p class="text-sm text-gray-400 mt-1">
+                                    <i class="fas fa-cut mr-1"></i>
+                                    ${booking.service_name || 'Service'}
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    ${date.toLocaleString('id-ID', { 
+                                        day: 'numeric', 
+                                        month: 'short', 
+                                        hour: '2-digit', 
+                                        minute: '2-digit' 
+                                    })}
+                                </p>
+                                ${booking.notes ? `
+                                    <p class="text-sm text-gray-500 mt-2 italic">
+                                        <i class="fas fa-sticky-note mr-1"></i>
+                                        ${booking.notes}
+                                    </p>
+                                ` : ''}
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                ${booking.status === 'pending' ? `
+                                    <button onclick="confirmBooking('${booking.id}')" 
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded text-xs font-medium transition">
+                                        <i class="fas fa-check mr-1"></i>Confirm
+                                    </button>
+                                ` : ''}
+                                ${booking.status === 'confirmed' ? `
+                                    <button onclick="completeBooking('${booking.id}')" 
+                                            class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 rounded text-xs font-medium transition">
+                                        <i class="fas fa-check-double mr-1"></i>Complete
+                                    </button>
+                                ` : ''}
+                                ${booking.status !== 'cancelled' && booking.status !== 'completed' ? `
+                                    <button onclick="cancelBooking('${booking.id}')" 
+                                            class="bg-red-500/20 hover:bg-red-500/30 text-red-400 px-3 py-2 rounded text-xs transition">
+                                        <i class="fas fa-times mr-1"></i>Cancel
+                                    </button>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function displayUpcomingSchedule() {
+            const container = document.getElementById('upcomingSchedule');
+            const now = new Date();
+            const threeHoursLater = new Date(now.getTime() + 3 * 60 * 60 * 1000);
+
+            const upcoming = allBookings
+                .filter(b => {
+                    const bookingDate = new Date(b.booking_date);
+                    return bookingDate >= now && bookingDate <= threeHoursLater && 
+                           (b.status === 'pending' || b.status === 'confirmed');
+                })
+                .sort((a, b) => new Date(a.booking_date) - new Date(b.booking_date));
+
+            if (upcoming.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500">No upcoming bookings</p>';
+                return;
+            }
+
+            container.innerHTML = upcoming.slice(0, 3).map(booking => {
+                const date = new Date(booking.booking_date);
+                return `
+                    <div class="bg-dark-800 rounded-lg p-3">
+                        <p class="text-sm font-medium text-white">${booking.customer_name}</p>
+                        <p class="text-xs text-gray-400 mt-1">
+                            ${date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                        </p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function filterQueue(filter) {
+            currentFilter = filter;
+            
+            // Update tab styles
+            ['all', 'pending', 'confirmed'].forEach(f => {
+                const tab = document.getElementById(`tab-${f}`);
+                if (f === filter) {
+                    tab.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-primary text-white';
+                } else {
+                    tab.className = 'px-4 py-2 rounded-lg text-sm font-medium bg-dark-800 text-gray-400 hover:text-white';
+                }
+            });
+
+            displayQueue();
+        }
+
+        async function confirmBooking(bookingId) {
+            try {
+                await axios.patch(`/api/bookings/${bookingId}/status`, { status: 'confirmed' });
+                await refreshQueue();
+            } catch (error) {
+                alert(error.response?.data?.error || 'Failed to confirm booking');
+            }
+        }
+
+        async function completeBooking(bookingId) {
+            try {
+                await axios.patch(`/api/bookings/${bookingId}/status`, { status: 'completed' });
+                await refreshQueue();
+            } catch (error) {
+                alert(error.response?.data?.error || 'Failed to complete booking');
+            }
+        }
+
+        async function cancelBooking(bookingId) {
+            if (!confirm('Cancel this booking?')) return;
+            
+            try {
+                await axios.delete(`/api/bookings/${bookingId}`);
+                await refreshQueue();
+            } catch (error) {
+                alert(error.response?.data?.error || 'Failed to cancel booking');
+            }
+        }
+
+        function viewHistory() {
+            alert('History page coming soon!');
+        }
+
+        async function logout() {
+            try {
+                await axios.post('/api/auth/logout');
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshQueue, 30000);
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - BALIK.LAGI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d97706',
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bento-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .bento-card:hover {
+            border-color: rgba(217, 119, 6, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.1);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+        }
+    </style>
+</head>
+<body class="bg-dark-950 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-dark-900 border-b border-dark-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-cut text-primary text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">BALIK.LAGI</h1>
+                        <p class="text-xs text-gray-400">Customer Dashboard</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400" id="userName">Loading...</span>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Grid (Bento Style) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Bookings -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Total Bookings</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="totalBookings">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-arrow-up mr-1"></i>Lifetime visits
+                </p>
+            </div>
+
+            <!-- Loyalty Points -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Loyalty Points</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="loyaltyPoints">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-gift text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-star mr-1"></i>Earn more rewards
+                </p>
+            </div>
+
+            <!-- Next Booking -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Next Booking</p>
+                        <h3 class="text-lg font-bold text-white mt-1" id="nextBooking">-</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-clock text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-xs">Upcoming appointment</p>
+            </div>
+
+            <!-- Favorite Capster -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Favorite Capster</p>
+                        <h3 class="text-lg font-bold text-white mt-1" id="favCapster">-</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-xs">Most visited</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Booking History (2 columns) -->
+            <div class="lg:col-span-2 bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-white">
+                        <i class="fas fa-history text-primary mr-2"></i>
+                        Booking History
+                    </h2>
+                    <button onclick="bookNow()" class="bg-primary hover:bg-primary/90 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                        <i class="fas fa-plus mr-2"></i>Book Now
+                    </button>
+                </div>
+
+                <div id="bookingHistory" class="space-y-4">
+                    <!-- Loading skeleton -->
+                    <div class="animate-pulse space-y-3">
+                        <div class="h-20 bg-dark-800 rounded-lg"></div>
+                        <div class="h-20 bg-dark-800 rounded-lg"></div>
+                        <div class="h-20 bg-dark-800 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="space-y-6">
+                <!-- Quick Book Card -->
+                <div class="bento-card rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-white mb-4">
+                        <i class="fas fa-bolt text-yellow-400 mr-2"></i>
+                        Quick Actions
+                    </h3>
+                    <div class="space-y-3">
+                        <button onclick="bookNow()" class="w-full bg-primary hover:bg-primary/90 text-white py-3 rounded-lg font-medium transition">
+                            <i class="fas fa-calendar-plus mr-2"></i>
+                            New Booking
+                        </button>
+                        <button onclick="viewServices()" class="w-full bg-dark-800 hover:bg-dark-700 text-white py-3 rounded-lg font-medium transition">
+                            <i class="fas fa-list mr-2"></i>
+                            View Services
+                        </button>
+                        <button onclick="viewCapsters()" class="w-full bg-dark-800 hover:bg-dark-700 text-white py-3 rounded-lg font-medium transition">
+                            <i class="fas fa-users mr-2"></i>
+                            View Capsters
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Rewards Card -->
+                <div class="bento-card rounded-2xl p-6 shadow-lg">
+                    <h3 class="text-lg font-bold text-white mb-4">
+                        <i class="fas fa-trophy text-yellow-400 mr-2"></i>
+                        Rewards
+                    </h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center p-3 bg-dark-800 rounded-lg">
+                            <span class="text-sm text-gray-400">Free Haircut</span>
+                            <span class="text-xs text-primary font-medium">100 pts</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-dark-800 rounded-lg">
+                            <span class="text-sm text-gray-400">10% Discount</span>
+                            <span class="text-xs text-primary font-medium">50 pts</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-dark-800 rounded-lg">
+                            <span class="text-sm text-gray-400">Free Styling</span>
+                            <span class="text-xs text-primary font-medium">75 pts</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        let userData = null;
+
+        async function loadDashboard() {
+            try {
+                // Get current user
+                const userResponse = await axios.get('/api/auth/me');
+                if (!userResponse.data.success) {
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                userData = userResponse.data.user;
+                document.getElementById('userName').textContent = userData.customer_name || userData.email;
+
+                // Load bookings
+                const bookingsResponse = await axios.get('/api/bookings/my-bookings');
+                const bookings = bookingsResponse.data.bookings || [];
+
+                // Update stats
+                document.getElementById('totalBookings').textContent = bookings.length;
+                document.getElementById('loyaltyPoints').textContent = userData.loyalty_points || 0;
+
+                // Find next booking
+                const now = new Date();
+                const upcoming = bookings
+                    .filter(b => new Date(b.booking_date) >= now && b.status !== 'cancelled')
+                    .sort((a, b) => new Date(a.booking_date) - new Date(b.booking_date));
+                
+                if (upcoming.length > 0) {
+                    const next = upcoming[0];
+                    const date = new Date(next.booking_date);
+                    document.getElementById('nextBooking').textContent = date.toLocaleDateString('id-ID', { 
+                        day: 'numeric', 
+                        month: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                }
+
+                // Display booking history
+                displayBookingHistory(bookings);
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                if (error.response?.status === 401) {
+                    window.location.href = '/login';
+                }
+            }
+        }
+
+        function displayBookingHistory(bookings) {
+            const container = document.getElementById('bookingHistory');
+            
+            if (bookings.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12">
+                        <i class="fas fa-calendar-times text-gray-600 text-4xl mb-3"></i>
+                        <p class="text-gray-400">Belum ada booking history</p>
+                        <button onclick="bookNow()" class="mt-4 text-primary hover:text-primary/80">
+                            Buat booking pertama Anda
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookings.slice(0, 10).map(booking => {
+                const date = new Date(booking.booking_date);
+                const statusColors = {
+                    'pending': 'bg-yellow-500/20 text-yellow-400',
+                    'confirmed': 'bg-blue-500/20 text-blue-400',
+                    'completed': 'bg-green-500/20 text-green-400',
+                    'cancelled': 'bg-red-500/20 text-red-400'
+                };
+                const statusClass = statusColors[booking.status] || 'bg-gray-500/20 text-gray-400';
+
+                return `
+                    <div class="bg-dark-800 border border-dark-700 rounded-lg p-4 hover:border-primary/30 transition">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <span class="px-3 py-1 ${statusClass} rounded-full text-xs font-medium">
+                                        ${booking.status}
+                                    </span>
+                                    <span class="text-gray-500 text-xs">
+                                        ${date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
+                                    </span>
+                                </div>
+                                <h4 class="font-semibold text-white">${booking.service_name || 'Service'}</h4>
+                                <p class="text-sm text-gray-400 mt-1">
+                                    <i class="fas fa-user mr-1"></i>
+                                    Capster: ${booking.capster_name || 'TBD'}
+                                </p>
+                                <p class="text-sm text-gray-400">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    ${date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                                </p>
+                            </div>
+                            ${booking.status === 'pending' || booking.status === 'confirmed' ? `
+                                <button onclick="cancelBooking('${booking.id}')" 
+                                        class="text-red-400 hover:text-red-300 text-sm">
+                                    Cancel
+                                </button>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this booking?')) return;
+            
+            try {
+                await axios.delete(`/api/bookings/${bookingId}`);
+                alert('Booking cancelled successfully');
+                loadDashboard();
+            } catch (error) {
+                alert(error.response?.data?.error || 'Failed to cancel booking');
+            }
+        }
+
+        function bookNow() {
+            // TODO: Implement booking modal or redirect to booking page
+            alert('Booking feature coming soon!');
+        }
+
+        function viewServices() {
+            alert('Services page coming soon!');
+        }
+
+        function viewCapsters() {
+            alert('Capsters page coming soon!');
+        }
+
+        async function logout() {
+            try {
+                await axios.post('/api/auth/logout');
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

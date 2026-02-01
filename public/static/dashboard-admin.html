@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - BALIK.LAGI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#d97706',
+                        dark: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .bento-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+            border: 1px solid rgba(148, 163, 184, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        .bento-card:hover {
+            border-color: rgba(217, 119, 6, 0.3);
+            box-shadow: 0 20px 25px -5px rgba(217, 119, 6, 0.1);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+        }
+    </style>
+</head>
+<body class="bg-dark-950 text-gray-100 min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-dark-900 border-b border-dark-800 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-cut text-primary text-2xl"></i>
+                    <div>
+                        <h1 class="text-xl font-bold text-white">BALIK.LAGI</h1>
+                        <p class="text-xs text-gray-400">Admin Dashboard</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-400" id="adminName">Loading...</span>
+                    <button onclick="logout()" class="text-gray-400 hover:text-red-400 transition">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Bookings -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Total Bookings</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="totalBookings">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-calendar-check text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-arrow-up mr-1"></i>+12% from last month
+                </p>
+            </div>
+
+            <!-- Active Capsters -->
+            <div class="stat-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-white/80 text-sm font-medium">Active Capsters</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="activeCapsters">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-users text-white text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-white/60 text-xs">
+                    <i class="fas fa-user-check mr-1"></i>Team members
+                </p>
+            </div>
+
+            <!-- Total Customers -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Total Customers</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="totalCustomers">0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user-friends text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-xs">Registered users</p>
+            </div>
+
+            <!-- Revenue (Mock) -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <div class="flex justify-between items-start mb-4">
+                    <div>
+                        <p class="text-gray-400 text-sm font-medium">Revenue</p>
+                        <h3 class="text-3xl font-bold text-white mt-1" id="revenue">Rp 0</h3>
+                    </div>
+                    <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-money-bill-wave text-primary text-xl"></i>
+                    </div>
+                </div>
+                <p class="text-gray-500 text-xs">This month</p>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+            <!-- Bookings Chart -->
+            <div class="lg:col-span-2 bento-card rounded-2xl p-6 shadow-lg">
+                <h3 class="text-lg font-bold text-white mb-4">
+                    <i class="fas fa-chart-line text-primary mr-2"></i>
+                    Booking Trends
+                </h3>
+                <canvas id="bookingsChart" class="w-full" height="80"></canvas>
+            </div>
+
+            <!-- Top Capsters -->
+            <div class="bento-card rounded-2xl p-6 shadow-lg">
+                <h3 class="text-lg font-bold text-white mb-4">
+                    <i class="fas fa-trophy text-yellow-400 mr-2"></i>
+                    Top Capsters
+                </h3>
+                <div id="topCapsters" class="space-y-3">
+                    <p class="text-sm text-gray-500">Loading...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div class="bento-card rounded-2xl p-6 shadow-lg">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white">
+                    <i class="fas fa-history text-primary mr-2"></i>
+                    Recent Bookings
+                </h2>
+                <button onclick="refreshData()" class="bg-dark-800 hover:bg-dark-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition">
+                    <i class="fas fa-sync-alt mr-2"></i>Refresh
+                </button>
+            </div>
+
+            <div id="recentBookings" class="overflow-x-auto">
+                <!-- Loading skeleton -->
+                <div class="animate-pulse space-y-3">
+                    <div class="h-12 bg-dark-800 rounded"></div>
+                    <div class="h-12 bg-dark-800 rounded"></div>
+                    <div class="h-12 bg-dark-800 rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios@1.6.0/dist/axios.min.js"></script>
+    <script>
+        let userData = null;
+        let bookingsChart = null;
+
+        async function loadDashboard() {
+            try {
+                // Get current user
+                const userResponse = await axios.get('/api/auth/me');
+                if (!userResponse.data.success || userResponse.data.user.role !== 'admin') {
+                    window.location.href = '/login';
+                    return;
+                }
+                
+                userData = userResponse.data.user;
+                document.getElementById('adminName').textContent = userData.customer_name || userData.email;
+
+                // Load data
+                await refreshData();
+
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                if (error.response?.status === 401) {
+                    window.location.href = '/login';
+                }
+            }
+        }
+
+        async function refreshData() {
+            try {
+                // Load bookings
+                const bookingsResponse = await axios.get('/api/bookings/my-bookings');
+                const bookings = bookingsResponse.data.bookings || [];
+
+                // Load capsters
+                const capstersResponse = await axios.get('/api/capsters');
+                const capsters = capstersResponse.data.capsters || [];
+
+                // Update stats
+                document.getElementById('totalBookings').textContent = bookings.length;
+                document.getElementById('activeCapsters').textContent = capsters.length;
+                
+                // Count unique customers
+                const uniqueCustomers = new Set(bookings.map(b => b.customer_phone)).size;
+                document.getElementById('totalCustomers').textContent = uniqueCustomers;
+
+                // Mock revenue calculation (assuming Rp 50,000 per booking)
+                const revenue = bookings.length * 50000;
+                document.getElementById('revenue').textContent = new Intl.NumberFormat('id-ID', {
+                    style: 'currency',
+                    currency: 'IDR',
+                    minimumFractionDigits: 0
+                }).format(revenue);
+
+                // Display recent bookings
+                displayRecentBookings(bookings);
+
+                // Display top capsters
+                displayTopCapsters(bookings, capsters);
+
+                // Create chart
+                createBookingsChart(bookings);
+
+            } catch (error) {
+                console.error('Error refreshing data:', error);
+            }
+        }
+
+        function displayRecentBookings(bookings) {
+            const container = document.getElementById('recentBookings');
+            
+            if (bookings.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">No bookings yet</p>';
+                return;
+            }
+
+            const recent = bookings.slice(0, 10);
+            
+            container.innerHTML = `
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-dark-800 text-left">
+                            <th class="py-3 px-4 text-sm font-medium text-gray-400">Customer</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-400">Service</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-400">Capster</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-400">Date</th>
+                            <th class="py-3 px-4 text-sm font-medium text-gray-400">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${recent.map(booking => {
+                            const date = new Date(booking.booking_date);
+                            const statusColors = {
+                                'pending': 'bg-yellow-500/20 text-yellow-400',
+                                'confirmed': 'bg-blue-500/20 text-blue-400',
+                                'completed': 'bg-green-500/20 text-green-400',
+                                'cancelled': 'bg-red-500/20 text-red-400'
+                            };
+                            const statusClass = statusColors[booking.status] || 'bg-gray-500/20 text-gray-400';
+
+                            return `
+                                <tr class="border-b border-dark-800 hover:bg-dark-800/50">
+                                    <td class="py-3 px-4 text-sm text-white">${booking.customer_name || 'N/A'}</td>
+                                    <td class="py-3 px-4 text-sm text-gray-300">${booking.service_name || 'N/A'}</td>
+                                    <td class="py-3 px-4 text-sm text-gray-300">${booking.capster_name || 'N/A'}</td>
+                                    <td class="py-3 px-4 text-sm text-gray-400">
+                                        ${date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}
+                                    </td>
+                                    <td class="py-3 px-4">
+                                        <span class="px-2 py-1 ${statusClass} rounded-full text-xs font-medium">
+                                            ${booking.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            `;
+                        }).join('')}
+                    </tbody>
+                </table>
+            `;
+        }
+
+        function displayTopCapsters(bookings, capsters) {
+            const container = document.getElementById('topCapsters');
+            
+            // Count bookings per capster
+            const capsterStats = {};
+            bookings.forEach(b => {
+                if (b.capster_id) {
+                    capsterStats[b.capster_id] = (capsterStats[b.capster_id] || 0) + 1;
+                }
+            });
+
+            // Sort by count
+            const sorted = Object.entries(capsterStats)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            if (sorted.length === 0) {
+                container.innerHTML = '<p class="text-sm text-gray-500">No data yet</p>';
+                return;
+            }
+
+            container.innerHTML = sorted.map(([capsterId, count], index) => {
+                const capster = capsters.find(c => c.id === capsterId);
+                const medal = ['🥇', '🥈', '🥉'][index] || '⭐';
+                
+                return `
+                    <div class="flex items-center justify-between p-3 bg-dark-800 rounded-lg">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-xl">${medal}</span>
+                            <span class="text-sm text-white font-medium">${capster?.capster_name || 'Unknown'}</span>
+                        </div>
+                        <span class="text-sm text-primary font-bold">${count}</span>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function createBookingsChart(bookings) {
+            const ctx = document.getElementById('bookingsChart').getContext('2d');
+
+            // Destroy existing chart
+            if (bookingsChart) {
+                bookingsChart.destroy();
+            }
+
+            // Prepare data (last 7 days)
+            const last7Days = Array.from({length: 7}, (_, i) => {
+                const d = new Date();
+                d.setDate(d.getDate() - (6 - i));
+                return d;
+            });
+
+            const labels = last7Days.map(d => d.toLocaleDateString('id-ID', { weekday: 'short' }));
+            const data = last7Days.map(day => {
+                return bookings.filter(b => {
+                    const bookingDate = new Date(b.booking_date);
+                    return bookingDate.toDateString() === day.toDateString();
+                }).length;
+            });
+
+            bookingsChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Bookings',
+                        data: data,
+                        borderColor: '#d97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#94a3b8',
+                                stepSize: 1
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#94a3b8'
+                            },
+                            grid: {
+                                color: 'rgba(148, 163, 184, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        async function logout() {
+            try {
+                await axios.post('/api/auth/logout');
+                window.location.href = '/login';
+            } catch (error) {
+                console.error('Logout error:', error);
+                window.location.href = '/login';
+            }
+        }
+
+        // Auto-refresh every 60 seconds
+        setInterval(refreshData, 60000);
+
+        // Load dashboard on page load
+        loadDashboard();
+    </script>
+</body>
+</html>

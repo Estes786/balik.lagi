@@ -42,6 +42,11 @@ app.get('/api/health', (c) => {
   });
 });
 
+// Dashboard Routes
+app.get('/dashboard/customer', serveStatic({ path: '/static/dashboard-customer.html', root: './public' }));
+app.get('/dashboard/capster', serveStatic({ path: '/static/dashboard-capster.html', root: './public' }));
+app.get('/dashboard/admin', serveStatic({ path: '/static/dashboard-admin.html', root: './public' }));
+
 // Home page
 app.get('/', (c) => {
   return c.html(`

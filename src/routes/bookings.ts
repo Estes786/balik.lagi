@@ -130,7 +130,48 @@ bookings.post('/create', async (c) => {
 })
 
 // =================================================================
-// GET MY BOOKINGS (Customer)
+// GET MY BOOKINGS (Customer) - with session support
+// =================================================================
+bookings.get('/my-bookings', async (c) => {
+  try {
+    // Get customer_id from session cookie
+    const cookie = c.req.header('Cookie')
+    let customer_id = null
+    
+    if (cookie) {
+      const sessionMatch = cookie.match(/session=([^;]+)/)
+      if (sessionMatch) {
+        const sessionId = sessionMatch[1]
+        // Get user from session
+        const session = await c.env.DB.prepare(`
+          SELECT user_id FROM user_sessions WHERE session_id = ?
+        `).bind(sessionId).first()
+        
+        if (session) {
+          customer_id = session.user_id
+        }
+      }
+    }
+
+    if (!customer_id) {
+      return c.json({ success: false, error: 'Not authenticated' }, 401)
+    }
+
+    const result = await c.env.DB.prepare(`
+      SELECT * FROM booking_appointments
+      WHERE customer_id = ?
+      ORDER BY booking_date DESC, booking_time DESC
+      LIMIT 50
+    `).bind(customer_id).all()
+
+    return c.json({ success: true, bookings: result.results })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// GET MY BOOKINGS (Customer) - with customer_id parameter
 // =================================================================
 bookings.get('/my-bookings/:customer_id', async (c) => {
   try {
@@ -170,7 +211,66 @@ bookings.get('/capster-queue/:capster_id', async (c) => {
 })
 
 // =================================================================
-// UPDATE BOOKING STATUS
+// UPDATE BOOKING STATUS (PATCH method for compatibility)
+// =================================================================
+bookings.patch('/:booking_id/status', async (c) => {
+  try {
+    const booking_id = c.req.param('booking_id')
+    const { status } = await c.req.json()
+
+    if (!['confirmed', 'in_progress', 'completed', 'cancelled', 'no_show'].includes(status)) {
+      return c.json({ success: false, error: 'Invalid status' }, 400)
+    }
+
+    // Update booking status
+    await c.env.DB.prepare(`
+      UPDATE booking_appointments 
+      SET status = ?, 
+          updated_at = datetime('now'),
+          completed_at = CASE WHEN ? = 'completed' THEN datetime('now') ELSE completed_at END
+      WHERE id = ?
+    `).bind(status, status, booking_id).run()
+
+    // If completed, increment coupon count
+    if (status === 'completed') {
+      const booking = await c.env.DB.prepare(`
+        SELECT customer_id, customer_phone, branch_id 
+        FROM booking_appointments 
+        WHERE id = ?
+      `).bind(booking_id).first()
+
+      if (booking) {
+        // Increment or create coupon record
+        await c.env.DB.prepare(`
+          INSERT INTO customer_coupons (
+            id, customer_id, customer_phone, branch_id, 
+            coupon_count, total_visits, last_visit_date, coupon_eligible
+          ) VALUES (
+            'coupon_' || ?, ?, ?, ?, 1, 1, date('now'), 0
+          )
+          ON CONFLICT(id) DO UPDATE SET
+            coupon_count = coupon_count + 1,
+            total_visits = total_visits + 1,
+            last_visit_date = date('now'),
+            coupon_eligible = CASE WHEN coupon_count + 1 >= 4 THEN 1 ELSE 0 END,
+            updated_at = datetime('now')
+        `).bind(
+          booking.customer_id,
+          booking.customer_id,
+          booking.customer_phone,
+          booking.branch_id
+        ).run()
+      }
+    }
+
+    return c.json({ success: true, message: 'Status updated successfully' })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// UPDATE BOOKING STATUS (PUT method - legacy support)
 // =================================================================
 bookings.put('/update-status/:booking_id', async (c) => {
   try {
@@ -223,6 +323,27 @@ bookings.put('/update-status/:booking_id', async (c) => {
     }
 
     return c.json({ success: true, message: 'Status updated successfully' })
+  } catch (error: any) {
+    return c.json({ success: false, error: error.message }, 500)
+  }
+})
+
+// =================================================================
+// DELETE/CANCEL BOOKING
+// =================================================================
+bookings.delete('/:booking_id', async (c) => {
+  try {
+    const booking_id = c.req.param('booking_id')
+
+    // Update status to cancelled instead of deleting
+    await c.env.DB.prepare(`
+      UPDATE booking_appointments 
+      SET status = 'cancelled', 
+          updated_at = datetime('now')
+      WHERE id = ?
+    `).bind(booking_id).run()
+
+    return c.json({ success: true, message: 'Booking cancelled successfully' })
   } catch (error: any) {
     return c.json({ success: false, error: error.message }, 500)
   }
